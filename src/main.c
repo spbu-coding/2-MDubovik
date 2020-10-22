@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <limits.h>
 
 #define MAX_ARRAY_SIZE 100
 
@@ -110,12 +111,12 @@ int main(int argc, char **argv) {
     int input_array_length = read_array(input_array);
 
     int filtered_array[MAX_ARRAY_SIZE];
-    int filtereg_array_length = filter_array(input_array, filtered_array, input_array_length, to, from);
+    int filtered_array_length = filter_array(input_array, filtered_array, input_array_length, to, from);
     int array_copy[MAX_ARRAY_SIZE];
-    copy_array(array_copy, filtered_array, filtereg_array_length);
+    copy_array(array_copy, filtered_array, filtered_array_length);
 
-    bubble_sort(array_copy, filtereg_array_length);
-    int result = find_difference(filtereg_array_length, filtered_array, array_copy);
+    bubble_sort(array_copy, filtered_array_length);
+    int result = find_difference(filtered_array_length, filtered_array, array_copy);
 
     return result;
 }
