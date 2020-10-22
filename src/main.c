@@ -5,9 +5,9 @@
 
 #define MAX_ARRAY_SIZE 100
 
-void buble_sort(long long input_array[], int copy_size);
+void bubble_sort(int sorted_array[], int copy_size);
 
-int analyse_to(char* to_string) {
+int analyse_to(char *to_string) {
     int length_to_string = strlen(to_string);
     int to = 0;
     int is_correct = 1;
@@ -23,7 +23,7 @@ int analyse_to(char* to_string) {
     return to;
 }
 
-int analyse_from(char* from_string) {
+int analyse_from(char *from_string) {
     int length_from_string = strlen(from_string);
     int from = 0;
     int is_correct = 1;
@@ -53,76 +53,69 @@ int analyse_parameters(int argc, char **argv, int *to, int *from) {
     return 0;
 }
 
-
-int read_array(long long input_array[]) {
+int read_array(int array[]) {
 
     int array_size = 0;
     char last_element;
-    long long element;
-
+    int element;
     do {
-        if (scanf("%lli%c", &element, &last_element) != 2)
+        if (scanf("%d%c", &element, &last_element) != 2)
             exit(-1);
-        input_array[array_size] = element;
+        array[array_size] = element;
         array_size++;
     } while (last_element != '\n');
     return array_size;
 }
 
-int copy_array(long long input_array[], long long array_copy[], int array_size, int to, int from) {
-    int copy_size = 0;
-    for (int i = 0; i < array_size; i++) {
-        if (to != 0 && input_array[i] > to)
-            fprintf(stderr, "%lli ", input_array[i]);
-        else if (from != 0 && input_array[i] < from)
-            fprintf(stdout, "%lli ", input_array[i]);
-        else if ((input_array[i] > from) && (input_array[i] < to)) {
-            array_copy[copy_size] = input_array[i];
-            copy_size++;
+int filter_array(int array[], int filtered_array[], int length, int to, int from) {
+    int filtered_size = 0;
+
+    for (int i = 0; i < length; i++) {
+        if (array[i] > to)
+            fprintf(stderr, "%d ", array[i]);
+        if (array[i] < from)
+            fprintf(stdout, "%d ", array[i]);
+        if ((array[i] >= from) && (array[i] <= to)) {
+            filtered_array[filtered_size] = array[i];
+            filtered_size++;
         }
 
     }
-    return copy_size;
+    return filtered_size;
 }
 
-    for (int i = 0; i < copy_size - 1; i++) {
-        for (int j = 0; j < copy_size - i - 1; j++) {
-            if (array_copy[j] > array_copy[j + 1]) {
-                long long tmp = array_copy[j];
-                array_copy[j] = array_copy[j + 1];
-                array_copy[j + 1] = tmp;
-            }
-        }
+void copy_array(int to[], int from[], int length) {
+    for (int i = 0; i < length; i++) {
+        to[i] = from[i];
     }
-int find_difference(int copy_size, long long input_array[], long long array_copy[]) {
-        int difference = 0;
-        for (int i = 0; i < copy_size; i++) {
-            if (array_copy[i] !=input_array[i])
-                difference++;
-        }
+}
+
+int find_difference(int size, int first_array[], int second_array[]) {
+    int difference = 0;
+    for (int i = 0; i < size; i++) {
+        if (second_array[i] != first_array[i])
+            difference++;
+    }
     return difference;
-    }
-
-
-
+}
 
 int main(int argc, char **argv) {
-    int to = 0, from = 0;
-    int array_size = 0;
-    int copy_size = 0;
-    long long input_array[MAX_ARRAY_SIZE], array_copy[MAX_ARRAY_SIZE];
-
-
+    int to = INT_MAX, from = INT_MIN;
+    int input_array[MAX_ARRAY_SIZE];
 
     int analyse_return_code = analyse_parameters(argc, argv, &to, &from);
     if (analyse_return_code != 0)
         return analyse_return_code;
 
-    int array_length = read_array(input_array);
-    array_length = copy_array(input_array, array_copy, array_size, to, from);
+    int input_array_length = read_array(input_array);
 
-    int result = find_difference(copy_size, input_array, array_copy);
+    int filtered_array[MAX_ARRAY_SIZE];
+    int filtereg_array_length = filter_array(input_array, filtered_array, input_array_length, to, from);
+    int array_copy[MAX_ARRAY_SIZE];
+    copy_array(array_copy, filtered_array, filtereg_array_length);
+
+    bubble_sort(array_copy, filtereg_array_length);
+    int result = find_difference(filtereg_array_length, filtered_array, array_copy);
 
     return result;
 }
-
