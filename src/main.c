@@ -6,7 +6,7 @@
 
 #define MAX_ARRAY_SIZE 100
 
-void bubble_sort(int sorted_array[], int copy_size);
+void bubble_sort(int array[], int length);
 
 int analyse_to(char *to_string) {
     int length_to_string = strlen(to_string);
